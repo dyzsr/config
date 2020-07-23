@@ -1,23 +1,27 @@
 call plug#begin('~/.vim/bundle')
 
-Plug 'scrooloose/nerdtree'
-"Plug 'bfrg/vim-cpp-modern'
-"Plug 'wizicer/vim-jison'
+" Languages
 Plug 'pangloss/vim-javascript'
-"Plug 'mxw/vim-jsx'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'vim-python/python-syntax'
 Plug 'yaymukund/vim-haxe'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'rhysd/vim-goyacc'
+Plug 'rust-lang/rust.vim'
+Plug 'petRUShka/vim-opencl'
+Plug 'wlangstroth/vim-racket'
+
+" Tools
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'ycm-core/YouCompleteMe'
-Plug 'wlangstroth/vim-racket'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 call plug#end()
 
-" Basic settings
+" Basics
 set nocompatible
 set backspace=indent,eol,start
 set ignorecase incsearch autoindent ruler showcmd number
@@ -29,6 +33,7 @@ set cursorline cursorcolumn
 syntax on
 filetype plugin on
 filetype plugin indent on
+"set encoding=utf-8
 
 colorscheme koehler
 
@@ -36,8 +41,7 @@ if has("vms")
 	set nobackup
 endif
 
-"set encoding=utf-8
-
+" Shortcuts
 func! Compile()
 	exec "w"
 	if &filetype == "c"
@@ -64,7 +68,7 @@ func! CompileAndRun()
 	endif
 endfunc
 
-let mapleader='-'
+let mapleader='\'
 
 map <F9> :call Compile()<CR>
 imap <F9> <ESC>:call Compile()<CR>
@@ -79,26 +83,34 @@ imap <leader><F8> <ESC>:w <CR> :exec "!c++ -o %< % -O1 -std=c++14 -Wall -mavx" <
 map <F6> :w<CR>:exec "!make"<CR>
 imap <F6> <ESC>:w<CR> :exec "!make"<CR>
 
-noremap <leader>4 $
-noremap <leader>1 ^
-noremap <leader>a ggVG"+y<ESC>
-"noremap <leader>d :cd %:p:h<CR>
-noremap <leader>c I//<ESC>
-noremap <leader>x :s/\(\s*\)\/\//\1/<ESC>
-noremap <leader>3 I#<ESC>
-noremap <leader>2 :s/\(\s*\)#/\1/<ESC>
+nmap <leader>4 $
+nmap <leader>1 ^
+nmap <leader>a ggVG"+y<ESC>
+nmap <leader>c I//<ESC>
+nmap <leader>x :s/\(\s*\)\/\//\1/<ESC>
+nmap <leader>3 I#<ESC>
+nmap <leader>2 :s/\(\s*\)#/\1/<ESC>
 
-map <C-h> <C-W>h
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-l> <C-W>l
+nmap <C-h> <C-W>h
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-l> <C-W>l
 
-" Settings for vim-go
+" Go
 " All files end with .y are detected as goyacc parser definition file.
 autocmd BufNewFile,BufReadPost *.y setlocal filetype=goyacc
-map <leader>r :GoReferrers<CR>
+nmap <leader>r :GoReferrers<CR>
 
-" Settings for YCM
+" Rust
+let g:rustfmt_autosave = 1
+
+" Auto Complete
+set completeopt-=preview
+
+" YCM
 let g:ycm_auto_hover = ''
 nmap <leader>d <plug>(YCMHover)
+
+" Tagbar
+nmap <leader>t :TagbarToggle<CR>
 
